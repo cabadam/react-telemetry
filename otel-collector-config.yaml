@@ -1,0 +1,34 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+        endpoint: 0.0.0.0:4318
+        cors:
+          allowed_origins: ["http://localhost:3000"]
+          allowed_headers: ["*"]
+
+exporters:
+  logging:
+    verbosity: Detailed
+  otlp: # Jaeger supports OTLP directly
+    endpoint: http://jaeger-all-in-one:4317
+    tls:
+      insecure: true
+  otlp/2:
+    endpoint: aws-collector:4317
+    tls:
+      insecure: true
+
+processors:
+  batch:
+
+service:
+  telemetry:
+    logs:
+      level: "debug"
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [logging, otlp, otlp/2]
+      processors: [batch]
