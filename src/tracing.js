@@ -29,13 +29,12 @@ const FrontendTracer = () => {
     )
   );
 
-  const contextManager = new ZoneContextManager();
-
   provider.register({
-    contextManager,
-    propagator: new CompositePropagator({
-      propagators: [new W3CBaggagePropagator(), new W3CTraceContextPropagator()],
-    }),
+    //contextManager : new ZoneContextManager(),
+    //propagator: new CompositePropagator({
+    //  propagators: [new W3CBaggagePropagator(), new W3CTraceContextPropagator()],
+    //}),
+    propagator: new W3CTraceContextPropagator()
   });
 
   registerInstrumentations({
@@ -45,6 +44,9 @@ const FrontendTracer = () => {
         '@opentelemetry/instrumentation-fetch': {
           propagateTraceHeaderCorsUrls: /.*/,
           clearTimingResources: true,
+          applyCustomAttributesOnSpan(span) {
+            span.setAttribute("app.synthetic_request", false);
+          }
         },
       }),
     ],

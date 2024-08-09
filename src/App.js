@@ -6,6 +6,13 @@ function App() {
   const [count, setCount] = useState(0);
   const handleClick = async () => {
     setCount(count + 1);
+    fetch('http://localhost:3000', {
+      headers: {
+        'traceparent': '00-abcdef1234567890abcdef1234567890-abcdef1234567890-01'
+      }
+    }).then(response => {
+      console.log(response);
+    });
     await fetch('http://localhost:3000/', { mode: 'no-cors' });
   };
 
