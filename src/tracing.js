@@ -30,11 +30,10 @@ const FrontendTracer = () => {
   );
 
   provider.register({
-    //contextManager : new ZoneContextManager(),
-    //propagator: new CompositePropagator({
-    //  propagators: [new W3CBaggagePropagator(), new W3CTraceContextPropagator()],
-    //}),
-    propagator: new W3CTraceContextPropagator()
+    contextManager : new ZoneContextManager(),
+    propagator: new CompositePropagator({
+      propagators: [new W3CBaggagePropagator(), new W3CTraceContextPropagator()],
+    }),
   });
 
   registerInstrumentations({
