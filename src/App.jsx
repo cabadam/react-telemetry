@@ -6,14 +6,14 @@ function App() {
   const [count, setCount] = useState(0);
   const handleClick = async () => {
     setCount(count + 1);
-    await fetch('http://localhost:3000/');
+    await fetch('/');
   };
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={handleClick}>App name is {process.env.REACT_APP_NAME}.  Count is {count}</button>
+        <button onClick={handleClick}>App name is {import.meta.env.REACT_APP_NAME}.  Count is {count}</button>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>

@@ -2,21 +2,26 @@ receivers:
   otlp:
     protocols:
       grpc:
+        endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
         cors:
-          allowed_origins: ["http://localhost:3000"]
+          allowed_origins: ["*"]
           allowed_headers: ["*"]
 
 exporters:
-  logging:
-    verbosity: Detailed
-  otlp: # Jaeger supports OTLP directly
-    endpoint: http://jaeger-all-in-one:4317
+  #debug:
+  #  verbosity: detailed
+  otlphttp/jaeger: # Jaeger supports OTLP directly
+    endpoint: http://traefik/jaeger-ingestion
     tls:
       insecure: true
-  otlp/2:
-    endpoint: aws-collector:4317
+  otlphttp/aws-collector:
+    endpoint: http://traefik/aws-collector
+    tls:
+      insecure: true
+  otlphttp/seq:
+    endpoint: http://traefik/seq-ingestion/ingest/otlp
     tls:
       insecure: true
 
@@ -24,11 +29,16 @@ processors:
   batch:
 
 service:
-  telemetry:
-    logs:
-      level: "debug"
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [logging, otlp, otlp/2]
       processors: [batch]
+      exporters: [otlphttp/jaeger, otlphttp/seq, otlphttp/aws-collector]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/seq, otlphttp/aws-collector]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/seq, otlphttp/aws-collector]

@@ -7,18 +7,24 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: 0.0.0.0:4317
+      http:
+        cors:
+          allowed_origins: ["*"]
+          allowed_headers: ["*"]
 
 processors:
   batch:
 
 exporters:
-  logging:
-    verbosity: Detailed
+  #logging:
+  #  verbosity: Detailed
   awsxray:
     region: 'us-east-2'
   awsemf:
     region: 'us-east-2'
+  awscloudwatchlogs:
+    log_group_name: "testing-logs"
+    log_stream_name: "testing-integrations-stream"
 
 service:
   pipelines:
@@ -28,8 +34,11 @@ service:
     metrics:
       receivers: [otlp]
       exporters: [awsemf]
+    logs:
+      receivers: [otlp]
+      exporters: [awscloudwatchlogs]
 
   extensions: [pprof]
   telemetry:
-    logs:
-      level: debug
+    #logs:
+      #level: debug

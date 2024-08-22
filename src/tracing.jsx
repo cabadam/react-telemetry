@@ -11,7 +11,7 @@ import { ZoneContextManager } from '@opentelemetry/context-zone';
 
 const FrontendTracer = () => {
   let resource = new Resource({
-    [SEMRESATTRS_SERVICE_NAME]: process.env.REACT_APP_NAME
+    [SEMRESATTRS_SERVICE_NAME]: import.meta.env.REACT_APP_NAME
   });
 
   const detectedResources = detectResourcesSync({ detectors: [browserDetector] });

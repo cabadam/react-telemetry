@@ -2,6 +2,7 @@
   "name": "react-telemetry",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@opentelemetry/auto-instrumentations-web": "^0.40.0",
     "@opentelemetry/context-zone": "^1.25.1",
@@ -13,14 +14,15 @@
     "@opentelemetry/sdk-trace-web": "^1.25.1",
     "@opentelemetry/semantic-conventions": "^1.25.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-scripts": "^5.0.1"
+    "react-dom": "^18.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +41,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0"
   }
 }
